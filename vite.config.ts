@@ -1,12 +1,21 @@
-import { vitePlugin as remix } from "@remix-run/dev";
-import { installGlobals } from "@remix-run/node";
-import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
+import { vitePlugin as remix } from '@remix-run/dev';
+import { installGlobals } from '@remix-run/node';
+import { defineConfig } from 'vite';
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 installGlobals();
 
 export default defineConfig({
-  plugins: [remix(), tsconfigPaths()],
+  plugins: [
+    remix({
+      future: {
+        v3_fetcherPersist: true,
+        v3_relativeSplatPath: true,
+        v3_throwAbortReason: true,
+      },
+    }),
+    tsconfigPaths(),
+  ],
   server: {
     fs: {
       // Restrict files that could be served by Vite's dev server.  Accessing
@@ -15,7 +24,7 @@ export default defineConfig({
       // If you're comfortable with Vite's dev server making any file within the
       // project root available, you can remove this option.  See more:
       // https://vitejs.dev/config/server-options.html#server-fs-allow
-      allow: ["app"],
+      allow: ['app'],
     },
   },
 });
